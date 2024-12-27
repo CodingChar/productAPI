@@ -2,6 +2,8 @@ const express = require('express')
 const products = express.Router() // Esto
 let productData = require('../products.js')
 
+const {createProduct} = require('../controllers/product-controller.js')
+ 
 const {Product} = require('../classes.js')
 
 
@@ -21,18 +23,12 @@ products.get('/product/:id' , (req,res) => {
 
 })
 
-products.post('/product', (req,res) => {
+products.post('/product', async (req,res) => {
     const product = new Product(req.body)
-    
-    index+=1
-    product.productCode = index;
 
-    productData.push(product)
+    let msg  = await createProduct(product.productName, product.description, product.price)
 
-    res.status(201).json({
-        message: `A product has been added with the ID${product.productCode}`,
-        url: `${req.protocol}://${req.host}:3000/product/${product.productCode}`
-    })
+    res.json(msg)
 })
 products.delete('/product/:id', (req,res) => {
     const {id} = req.params;

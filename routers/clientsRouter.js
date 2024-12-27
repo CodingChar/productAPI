@@ -2,7 +2,7 @@ const express = require('express')
 const clients = express.Router() // Esto
 let clientData = require('../clients.js') //Client Json
 const {Client} = require('../classes.js')
-
+const {createUser} = require('../controllers/user-controller.js')
 
 let index = clientData.length;
 
@@ -16,15 +16,13 @@ clients.get(`/client/:id`, (req, res)=>{
     let clientFound = clientData.filter(item => item.clientID == id);
     res.status(200).json(clientFound)
 })
-clients.post(`/client`, (req, res) =>{
+clients.post(`/client`, async (req, res) =>{
     
     const client = new Client (req.body)
-    index+=1
-    client.clientID = index;
-    console.log(client.clientID)
-    clientData.push(client)
+    
+    const msg = await createUser(client.name, client.lastName)
 
-    res.status(201).json({message:`Your client have been created succesfully, your id: ${client.clientID}`})
+    res.status(201).json(msg)
     
 });
 clients.delete(`client/:id`, (req, res)=>{
