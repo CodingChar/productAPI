@@ -66,14 +66,14 @@ const deleteProduct = async (id) => {
 
     sql =  `DELETE FROM products WHERE productID=?`
     try{
-
-        confirmsd
+        
         const message = await new Promise((resolve, reject) => {
             db.run(sql, [id], (err) => {
                 if(err) reject(err)
                 resolve()
             })
         })
+
     }catch(error){
         console.error(error)
     }
