@@ -29,19 +29,61 @@ const createProduct = async (productName, description, price) => {
     sql = `INSERT INTO products(productID, productName, description, price) VALUES (?, ?, ?, ?)`
 
     try{
-        const message = await new Promise((resolve, reject) => {
+        const response = await new Promise((resolve, reject) => {
             let product = {id, productName, description, price}
             db.run(sql, [id, productName, description, price], err => {
                 if(err) reject(err)
                 resolve(product)
             })
         })
-        return message
+        return response
     }catch(error){
         console.error(error.message)
-        throw error;
     }
 };
 
 
-module.exports = {createProduct}
+const findProduct = async (id) => {
+    
+    sql = `SELECT * FROM products WHERE productID = ?;`
+    
+    console.log('executing')
+    try{
+        const response  = await new Promise((resolve, reject) => {
+            let product = {}
+            db.all(sql, [id], (err, result) => {
+                if(err) reject(err)
+                resolve(result)
+            })
+        })
+        return response
+    }catch(error){
+        console.error(error.message)
+    }
+
+}
+const deleteProduct = async (id) => {
+
+    sql =  `DELETE FROM products WHERE productID=?`
+    try{
+
+        confirmsd
+        const message = await new Promise((resolve, reject) => {
+            db.run(sql, [id], (err) => {
+                if(err) reject(err)
+                resolve()
+            })
+        })
+    }catch(error){
+        console.error(error)
+    }
+} 
+
+
+const main = async() => {
+}   
+main()
+
+
+
+module.exports = {createProduct}                                                 
